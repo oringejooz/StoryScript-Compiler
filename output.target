@@ -1,0 +1,12 @@
+LOAD "The Enchanted Forest"
+PRINT "You find yourself at the edge of a dense forest. The path splits into two."
+PROMPT "Go left", "Go right -> [left_path, right_path]
+LABEL left_path
+PRINT "You chose the left path. You encounter a talking mushroom."
+JUMP deep_forest
+LABEL right_path
+PRINT "You chose the right path. You find a serene lake."
+HALT
+LABEL deep_forest
+PRINT "You reach the heart of the forest where a red dragon guards the treasure."
+HALT

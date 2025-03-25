@@ -1,0 +1,12 @@
+TITLE "The Enchanted Forest"
+NARRATE "You find yourself at the edge of a dense forest. The path splits into two."
+CHOICE "Go left", "Go right" -> [left_path, right_path]
+LABEL left_path
+NARRATE "You chose the left path. You encounter a talking mushroom."
+GOTO deep_forest
+LABEL right_path
+NARRATE "You chose the right path. You find a serene lake."
+END
+LABEL deep_forest
+NARRATE "You reach the heart of the forest where a red dragon guards the treasure."
+END

@@ -5,7 +5,8 @@
 #include "semantics.h"
 #include "interpreter.h"
 #include "ast.h"
-
+#include "icg.h"
+#include "codegen.h"
 int main() {
     FILE *file = fopen("story.txt", "r");
 
@@ -26,6 +27,14 @@ int main() {
 
     // Perform Semantic Analysis
     check_semantics(ast);
+
+    // ✅ Generate Intermediate Code
+    printf("\n--- Generating Intermediate Code ---\n");
+    write_intermediate_code(ast, "output.icg");
+
+    // ✅ Generate Target Code from ICG
+    printf("\n--- Generating Target Code ---\n");
+    generate_target_code("output.icg", "output.target");
 
     // Run the StoryScript using the AST
     printf("\n--- Story Execution ---\n");
