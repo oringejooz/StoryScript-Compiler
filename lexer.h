@@ -1,10 +1,6 @@
-#include <stdio.h>
-
-
 #ifndef LEXER_H
 #define LEXER_H
 
-// Define Token Types
 typedef enum {
     TOKEN_TITLE,
     TOKEN_SAY,
@@ -31,13 +27,11 @@ typedef enum {
     TOKEN_EOF
 } TokenType;
 
-// Token Structure
 typedef struct {
     TokenType type;
     char *value;
 } Token;
 
-// Function Prototypes
 void init_lexer(FILE *file);
 Token get_next_token();
 void print_token(Token token);
