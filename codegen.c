@@ -68,6 +68,37 @@ void generate_target_code(const char *icg_filename, const char *target_filename)
         else if (strncmp(line, "END", 3) == 0) {
             fprintf(target_file, "HALT\n");
         }
+        if (sscanf(line, "CREATE_INVENTORY") == 0) {
+            fprintf(target_file, "INVENTORY_INIT\n");
+        }
+        else if (sscanf(line, "ADD_ITEM \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "INVENTORY_ADD \"%s\"\n", param1);
+        }
+        else if (sscanf(line, "REMOVE_ITEM \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "INVENTORY_REMOVE \"%s\"\n", param1);
+        }
+        else if (strncmp(line, "SHOW_INVENTORY", 14) == 0) {
+            fprintf(target_file, "INVENTORY_SHOW\n");
+        }
+        else if (sscanf(line, "COMBINE \"%[^\"]\" \"%[^\"]\"", param1, param2) == 2) {
+            fprintf(target_file, "STRING_COMBINE \"%s\" \"%s\"\n", param1, param2);
+        }
+        else if (sscanf(line, "LENGTH_OF \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "STRING_LENGTH \"%s\"\n", param1);
+        }
+        else if (sscanf(line, "UPPERCASE \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "STRING_UPPER \"%s\"\n", param1);
+        }
+        else if (sscanf(line, "LOWERCASE \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "STRING_LOWER \"%s\"\n", param1);
+        }
+        else if (sscanf(line, "SET_TIME \"%[^\"]\"", param1) == 1) {
+            fprintf(target_file, "SET_TIME \"%s\"\n", param1);
+        }
+        else if (strncmp(line, "CHECK_TIME", 10) == 0) {
+            fprintf(target_file, "GET_TIME\n");
+        }
+
         else {
             fprintf(stderr, "Warning: Unknown ICG command: %s\n", line);
         }

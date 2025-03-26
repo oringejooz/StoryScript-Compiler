@@ -29,19 +29,55 @@ typedef struct {
     TokenType type;
 } Keyword;
 
+// Keyword keywords[] = {
+//     {"title", TOKEN_TITLE},
+//     {"narrate", TOKEN_NARRATE},
+//     {"choice", TOKEN_CHOICE},
+//     {"input", TOKEN_INPUT},
+//     {"goto", TOKEN_GOTO},
+//     {"end", TOKEN_END},
+//     {"if", TOKEN_IF},
+//     {"ifelse", TOKEN_IFELSE},
+//     {"switch", TOKEN_SWITCH},
+//     {"assign", TOKEN_ASSIGN},
+//     {NULL, TOKEN_EOF}
+// };
+
 Keyword keywords[] = {
     {"title", TOKEN_TITLE},
     {"narrate", TOKEN_NARRATE},
+    {"say", TOKEN_SAY},
+    {"pause", TOKEN_PAUSE},
     {"choice", TOKEN_CHOICE},
-    {"input", TOKEN_INPUT},
     {"goto", TOKEN_GOTO},
+    {"story_restart", TOKEN_RESTART},
     {"end", TOKEN_END},
+    {"assign", TOKEN_ASSIGN},
+    {"increase", TOKEN_INCREASE},
+    {"decrease", TOKEN_DECREASE},
     {"if", TOKEN_IF},
     {"ifelse", TOKEN_IFELSE},
     {"switch", TOKEN_SWITCH},
-    {"assign", TOKEN_ASSIGN},
+    {"createInventory", TOKEN_CREATE_INV},
+    {"addItem", TOKEN_ADD_ITEM},
+    {"removeItem", TOKEN_REMOVE_ITEM},
+    {"hasItem", TOKEN_HAS_ITEM},
+    {"countInventory", TOKEN_COUNT_INV},
+    {"clearInventory", TOKEN_CLEAR_INV},
+    {"showInventory", TOKEN_SHOW_INV},
+    {"combine", TOKEN_COMBINE},
+    {"lengthOf", TOKEN_LENGTH},
+    {"substring_in", TOKEN_SUBSTRING},
+    {"uppercase", TOKEN_UPPERCASE},
+    {"lowercase", TOKEN_LOWERCASE},
+    {"format_text", TOKEN_FORMAT_TEXT},
+    {"set_time_of_day", TOKEN_SET_TIME},
+    {"check_time_of_day", TOKEN_CHECK_TIME},
+    {"checkStatus", TOKEN_CHECK_STATUS},
+    {"characterStatus", TOKEN_CHAR_STATUS},
     {NULL, TOKEN_EOF}
 };
+
 
 void init_lexer(FILE *file) {
     buffer_pos = 0;

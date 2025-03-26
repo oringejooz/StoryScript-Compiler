@@ -1,12 +1,24 @@
 LOAD "The Enchanted Forest"
+INVENTORY_INIT
 PRINT "You find yourself at the edge of a dense forest. The path splits into two."
+INVENTORY_INIT
 PROMPT "Go left", "Go right -> [left_path, right_path]
+INVENTORY_INIT
 LABEL left_path
+INVENTORY_INIT
 PRINT "You chose the left path. You encounter a talking mushroom."
+INVENTORY_INIT
 JUMP deep_forest
+INVENTORY_INIT
 LABEL right_path
+INVENTORY_INIT
 PRINT "You chose the right path. You find a serene lake."
+INVENTORY_INIT
 HALT
+INVENTORY_INIT
 LABEL deep_forest
+INVENTORY_INIT
 PRINT "You reach the heart of the forest where a red dragon guards the treasure."
+INVENTORY_INIT
 HALT
+INVENTORY_INIT

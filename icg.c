@@ -44,8 +44,52 @@ void generate_node_ir(ASTNode *node) {
         case AST_LABEL:
             fprintf(icg_file, "LABEL %s\n", node->value);
             break;
+            case AST_CREATE_INV:
+            fprintf(icg_file, "CREATE_INVENTORY\n");
+            break;
+
+        case AST_ADD_ITEM:
+            fprintf(icg_file, "ADD_ITEM \"%s\"\n", node->value);
+            break;
+
+        case AST_REMOVE_ITEM:
+            fprintf(icg_file, "REMOVE_ITEM \"%s\"\n", node->value);
+            break;
+
+        case AST_SHOW_INV:
+            fprintf(icg_file, "SHOW_INVENTORY\n");
+            break;
+
+        case AST_COMBINE:
+            fprintf(icg_file, "COMBINE \"%s\" \"%s\"\n", node->str1, node->str2);
+            break;
+
+        case AST_LENGTH:
+            fprintf(icg_file, "LENGTH_OF \"%s\"\n", node->value);
+            break;
+
+        case AST_UPPERCASE:
+            fprintf(icg_file, "UPPERCASE \"%s\"\n", node->value);
+            break;
+
+        case AST_LOWERCASE:
+            fprintf(icg_file, "LOWERCASE \"%s\"\n", node->value);
+            break;
+
+        case AST_FORMAT_TEXT:
+            fprintf(icg_file, "FORMAT_TEXT \"%s\" \"%s\"\n", node->str1, node->str2);
+            break;
+
+        case AST_SET_TIME:
+            fprintf(icg_file, "SET_TIME \"%s\"\n", node->value);
+            break;
+
+        case AST_CHECK_TIME:
+            fprintf(icg_file, "CHECK_TIME\n");
+            break;
+
         default:
-            fprintf(stderr, "Error: Unknown AST Node Type %d\n", node->type);
+            fprintf(stderr, "Unknown AST Node Type!\n");
             exit(1);
     }
 }

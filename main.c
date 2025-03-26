@@ -3,7 +3,6 @@
 #include "lexer.h"
 #include "parser.h"
 #include "semantics.h"
-#include "interpreter.h"
 #include "ast.h"
 #include "icg.h"
 #include "codegen.h"
@@ -35,10 +34,6 @@ int main() {
     // ✅ Generate Target Code from ICG
     printf("\n--- Generating Target Code ---\n");
     generate_target_code("output.icg", "output.target");
-
-    // Run the StoryScript using the AST
-    printf("\n--- Story Execution ---\n");
-    execute_ast(ast);
 
     fclose(file);
     free_ast(ast); // Clean up memory
