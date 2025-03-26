@@ -6,6 +6,8 @@
 #include "ast.h"
 #include "icg.h"
 #include "codegen.h"
+#include "interpreter.h"
+
 int main() {
     FILE *file = fopen("story.txt", "r");
 
@@ -27,13 +29,17 @@ int main() {
     // Perform Semantic Analysis
     check_semantics(ast);
 
-    // ✅ Generate Intermediate Code
+    // Generate Intermediate Code
     printf("\n--- Generating Intermediate Code ---\n");
     write_intermediate_code(ast, "output.icg");
 
-    // ✅ Generate Target Code from ICG
+    // Generate Target Code from ICG
     printf("\n--- Generating Target Code ---\n");
     generate_target_code("output.icg", "output.target");
+
+    // Run the Interpreter
+    printf("\n--- Running Story ---\n");
+    run_interpreter("output.target");
 
     fclose(file);
     free_ast(ast); // Clean up memory
