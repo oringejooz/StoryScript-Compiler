@@ -1,12 +1,14 @@
-title("The Enchanted Forest")
+narrate("=== The Enchanted Forest ===")
 narrate("You find yourself at the edge of a dense forest. The path splits into two.")
 choice("Go left", "Go right") -> [left_path, right_path]
+
 left_path:
-    narrate("You chose the left path. You encounter a talking mushroom.")
-    goto(deep_forest)
+narrate("You chose the left path. You encounter a talking mushroom.")
+goto(ending)
+
 right_path:
-    narrate("You chose the right path. You find a serene lake.")
-    end()
-deep_forest:
-    narrate("You reach the heart of the forest where a red dragon guards the treasure.")
-    end()
+narrate("You reach the heart of the forest where a red dragon guards the treasure.")
+goto(ending)
+
+ending:
+end()
