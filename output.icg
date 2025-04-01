@@ -1,11 +1,18 @@
-NARRATE "=== The Enchanted Forest ==="
-NARRATE "You find yourself at the edge of a dense forest. The path splits into two."
-CHOICE "Go left", "Go right" -> [left_path, right_path]
-LABEL left_path
-NARRATE "You chose the left path. You encounter a talking mushroom."
-GOTO ending
-LABEL right_path
-NARRATE "You reach the heart of the forest where a red dragon guards the treasure."
-GOTO ending
-LABEL ending
+TITLE "The Lost Temple"
+NARRATE "You stand before the entrance of an ancient temple, rumored to be filled with traps and treasures."
+CHOICE "Enter the temple", "Walk away" -> [enter_temple, walk_away]
+LABEL enter_temple
+NARRATE "You step inside, and the door slams shut behind you."
+CHOICE "Light a torch", "Proceed in darkness" -> [light_torch, dark_path]
+LABEL light_torch
+NARRATE "The torch reveals ancient carvings and a hidden passage."
+GOTO hidden_passage
+LABEL dark_path
+NARRATE "You stumble in the darkness and fall into a pit."
+END
+LABEL walk_away
+NARRATE "You decide not to take the risk and leave the temple behind."
+END
+LABEL hidden_passage
+NARRATE "You find a hidden chamber filled with glittering gold and ancient relics."
 END
