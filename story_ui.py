@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, filedialog, messagebox, scrolledtext
+from tkinter import filedialog, messagebox, scrolledtext
 import subprocess
 import os
 import time
@@ -13,7 +13,7 @@ class StoryScriptIDE:
         self.root = root
         self.root.title("StoryScript IDE")
         self.root.geometry("1200x800")
-        self.root.configure(bg="#2e2e2e")
+        self.root.configure(bg="#2e2e2e")  # Dark background for the window
 
         self.create_menu()
         self.create_widgets()
@@ -40,25 +40,23 @@ class StoryScriptIDE:
         help_menu.add_command(label="User Manual", command=self.show_manual)
 
     def create_widgets(self):
-        main_frame = ttk.Frame(self.root)
+        main_frame = tk.Frame(self.root, bg="#2e2e2e")  # Dark background for main frame
         main_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
 
         self.code_input = scrolledtext.ScrolledText(main_frame, wrap=tk.WORD, font=("Consolas", 12), bg="#1e1e1e", fg="white")
         self.code_input.pack(fill=tk.BOTH, expand=True, side=tk.LEFT, padx=(0, 5))
 
-        button_frame = ttk.Frame(main_frame)
+        button_frame = tk.Frame(main_frame, bg="#2e2e2e")  # Dark background for button frame
         button_frame.pack(fill=tk.X, pady=5)
 
-        ttk.Button(button_frame, text="Compile", command=self.compile_code, style="TButton").pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Run", command=self.run_story, style="TButton").pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Load", command=self.load_file).pack(side=tk.LEFT, padx=5)
-        ttk.Button(button_frame, text="Save", command=self.save_file).pack(side=tk.LEFT, padx=5)
+        # Using basic tk.Button for custom styles
+        tk.Button(button_frame, text="Compile", command=self.compile_code, bg="#4CAF50", fg="white", font=("Helvetica", 10)).pack(side=tk.LEFT, padx=5)
+        tk.Button(button_frame, text="Run", command=self.run_story, bg="#4CAF50", fg="white", font=("Helvetica", 10)).pack(side=tk.LEFT, padx=5)
+        tk.Button(button_frame, text="Load", command=self.load_file, bg="#4CAF50", fg="white", font=("Helvetica", 10)).pack(side=tk.LEFT, padx=5)
+        tk.Button(button_frame, text="Save", command=self.save_file, bg="#4CAF50", fg="white", font=("Helvetica", 10)).pack(side=tk.LEFT, padx=5)
 
         self.output_terminal = scrolledtext.ScrolledText(main_frame, height=10, font=("Courier", 10), bg="#1e1e1e", fg="white")
         self.output_terminal.pack(fill=tk.BOTH, expand=True, pady=(5, 0))
-
-        self.root.style = ttk.Style()
-        self.root.style.configure("TButton", font=("Helvetica", 10), background="#4CAF50", foreground="white")
 
     def new_file(self):
         self.code_input.delete("1.0", tk.END)
@@ -151,7 +149,7 @@ class StoryScriptIDE:
     def show_manual(self):
         manual = """
         StoryScript IDE - User Manual
-        =============================
+        ================================
         - **title("Text")**: Set story title.
         - **say("Text")**: Display dialogue.
         - **narrate("Text")**: Display narration.
