@@ -1,6 +1,6 @@
 PRINT "=== The Enchanted Forest ==="
 PRINT "You find yourself at the edge of a dense forest. The path splits into two."
-PROMPT "Go left"", " "Go right" -> [left_path, right_path]
+PROMPT "Go left", "Go right"  -> [left_path, right_path]
 LABEL left_path
 PRINT "You chose the left path. You encounter a talking mushroom."
 JUMP ending

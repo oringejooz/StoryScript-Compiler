@@ -8,40 +8,27 @@
 #include "codegen.h"
 #include "interpreter.h"
 
-int main() {
-    FILE *file = fopen("story.txt", "r");
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <story_file>\n", argv[0]);
+        return 1;
+    }
 
-    if (file == NULL) {
+    FILE *file = fopen(argv[1], "r");
+    if (!file) {
         perror("Error opening file");
         return 1;
     }
 
-    // Initialize the lexer with the file
     init_lexer(file);
-
-    // Parse StoryScript and generate AST
     AST *ast = parse();
-
-    // Print the AST to confirm parsing works correctly
-    printf("\n--- AST Structure ---\n");
-    print_ast(ast);
-
-    // Perform Semantic Analysis
+    print_ast(ast); // This should now link correctly
     check_semantics(ast);
-
-    // Generate Intermediate Code
-    printf("\n--- Generating Intermediate Code ---\n");
     write_intermediate_code(ast, "output.icg");
-
-    // Generate Target Code from ICG
-    printf("\n--- Generating Target Code ---\n");
     generate_target_code("output.icg", "output.target");
-
-    // Run the Interpreter
-    printf("\n--- Running Story ---\n");
     run_interpreter("output.target");
 
     fclose(file);
-    free_ast(ast); // Clean up memory
+    free_ast(ast);
     return 0;
 }

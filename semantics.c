@@ -4,42 +4,51 @@
 #include "semantics.h"
 #include "utils.h"
 
-void check_labels(AST *ast) {
-    ASTNode *current = ast->head;
-    char *defined_labels[100];
+void check_semantics(AST *ast) {
+    char *labels[100];
     int label_count = 0;
+    ASTNode *current = ast->head;
 
-    // First pass: Collect defined labels from AST_LABEL nodes
     while (current) {
         if (current->type == AST_LABEL) {
-            if (label_count >= 100) {
-                error("Too many labels defined (max 100)");
-            }
-            defined_labels[label_count++] = current->value;
+            labels[label_count++] = current->value;
         }
         current = current->next;
     }
 
-    // Second pass: Check goto and choice labels against defined labels
     current = ast->head;
     while (current) {
-        if (current->type == AST_GOTO) {
+        if (current->type == AST_GOTO || current->type == AST_IF || current->type == AST_IFELSE) {
+            char *target = current->type == AST_GOTO ? current->value : current->true_label;
             int found = 0;
-            for (int j = 0; j < label_count; j++) {
-                if (strcmp(current->value, defined_labels[j]) == 0) {
+            for (int i = 0; i < label_count; i++) {
+                if (!strcmp(target, labels[i])) {
                     found = 1;
                     break;
                 }
             }
             if (!found) {
-                fprintf(stderr, "Error: Undefined label '%s' in goto\n", current->value);
+                fprintf(stderr, "Error: Undefined label '%s'\n", target);
                 exit(1);
+            }
+            if (current->type == AST_IFELSE) {
+                found = 0;
+                for (int i = 0; i < label_count; i++) {
+                    if (!strcmp(current->false_label, labels[i])) {
+                        found = 1;
+                        break;
+                    }
+                }
+                if (!found) {
+                    fprintf(stderr, "Error: Undefined label '%s'\n", current->false_label);
+                    exit(1);
+                }
             }
         } else if (current->type == AST_CHOICE) {
             for (int i = 0; i < current->choice_count; i++) {
                 int found = 0;
                 for (int j = 0; j < label_count; j++) {
-                    if (strcmp(current->labels[i], defined_labels[j]) == 0) {
+                    if (!strcmp(current->labels[i], labels[j])) {
                         found = 1;
                         break;
                     }
@@ -52,8 +61,4 @@ void check_labels(AST *ast) {
         }
         current = current->next;
     }
-}
-
-void check_semantics(AST *ast) {
-    check_labels(ast);
 }
