@@ -1,6 +1,9 @@
-LOAD "Hero Selection"
-PRINT "Now we will design our hero"
-ADD_CHAR "Bob"
-CREATE_INV bob_inv
-ADD_ITEM bob_inv "baseball bat"
-SHOW_INV bob_inv
+PRINT "Welcome to the story!"
+CREATE_INV player_inv
+ADD_ITEM player_inv "sword"
+SHOW_INV player_inv
+ADD_CHAR "Hero"
+SET_CHAR_EMOTION "Hero" "happy"
+SET_CHAR_DESC "Hero" "A brave adventurer"
+CHECK_STATUS "Hero"
+HALT
