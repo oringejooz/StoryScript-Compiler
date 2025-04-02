@@ -348,8 +348,11 @@ void run_interpreter(const char *target_filename) {
                 }
             }
         } else if (strncmp(line, "HAS_ITEM", 8) == 0) {
-            char inv_name[MAX_LINE_LENGTH], item[MAX_LINE_LENGTH];
-            sscanf(line, "HAS_ITEM %s \"%[^\"]\"", inv_name, item);
+            char inv_name[MAX_LINE_LENGTH], item[MAX_LINE_LENGTH], var_name[MAX_LINE_LENGTH] = {0};
+            // Allow optional variable name to store result
+            if (sscanf(line, "HAS_ITEM %s \"%[^\"]\" %s", inv_name, item, var_name) < 2) {
+                sscanf(line, "HAS_ITEM %s \"%[^\"]\"", inv_name, item); // Fallback for no variable
+            }
             Inventory *inv = find_inventory(inv_name);
             int has = 0;
             if (inv) {
@@ -360,7 +363,12 @@ void run_interpreter(const char *target_filename) {
                     }
                 }
             }
-            set_var(inv_name, has);
+            // If a variable name is provided, store the result there; otherwise, print it
+            if (var_name[0]) {
+                set_var(var_name, has);
+            } else {
+                printf("Has %s in %s: %s\n", item, inv_name, has ? "Yes" : "No");
+            }
         } else if (strncmp(line, "COUNT_INV", 9) == 0) {
             char inv_name[MAX_LINE_LENGTH];
             sscanf(line, "COUNT_INV %s", inv_name);

@@ -123,8 +123,13 @@ void generate_target_code(const char *icg_filename, const char *target_filename)
             sscanf(line, "REMOVE_ITEM %s \"%[^\"]\"", param1, param2);
             fprintf(target_file, "REMOVE_ITEM %s \"%s\"\n", param1, param2);
         } else if (!strcmp(cmd, "HAS_ITEM")) {
-            sscanf(line, "HAS_ITEM %s \"%[^\"]\"", param1, param2);
-            fprintf(target_file, "HAS_ITEM %s \"%s\"\n", param1, param2);
+            char var_name[256] = {0};
+            if (sscanf(line, "HAS_ITEM %s \"%[^\"]\" %s", param1, param2, var_name) == 3) {
+                fprintf(target_file, "HAS_ITEM %s \"%s\" %s\n", param1, param2, var_name);
+            } else {
+                sscanf(line, "HAS_ITEM %s \"%[^\"]\"", param1, param2);
+                fprintf(target_file, "HAS_ITEM %s \"%s\"\n", param1, param2);
+            }
         } else if (!strcmp(cmd, "COUNT_INV")) {
             sscanf(line, "COUNT_INV %s", param1);
             fprintf(target_file, "COUNT_INV %s\n", param1);

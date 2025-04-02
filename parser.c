@@ -444,12 +444,17 @@ void parse_statement() {
         case TOKEN_HAS_ITEM:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {
+            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_HAS_ITEM, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
                 if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
                 advance();
+                if (current_token.type == TOKEN_COMMA) { // Optional variable to store result
+                    advance();
+                    if (current_token.type == TOKEN_IDENTIFIER) node->str2 = strdup(current_token.value);
+                    advance();
+                }
             }
             match(TOKEN_RPAREN);
             break;
