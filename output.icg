@@ -1,18 +1,9 @@
-TITLE "The Lost Temple"
-NARRATE "You stand before the entrance of an ancient temple, rumored to be filled with traps and treasures."
-CHOICE "Enter the temple", "Walk away" -> [enter_temple, walk_away]
-LABEL enter_temple
-NARRATE "You step inside, and the door slams shut behind you."
-CHOICE "Light a torch", "Proceed in darkness" -> [light_torch, dark_path]
-LABEL light_torch
-NARRATE "The torch reveals ancient carvings and a hidden passage."
-GOTO hidden_passage
-LABEL dark_path
-NARRATE "You stumble in the darkness and fall into a pit."
-END
-LABEL walk_away
-NARRATE "You decide not to take the risk and leave the temple behind."
-END
-LABEL hidden_passage
-NARRATE "You find a hidden chamber filled with glittering gold and ancient relics."
-END
+PRINT "Welcome to the story!"
+CREATE_INV player_inv
+ADD_ITEM player_inv "sword"
+SHOW_INV player_inv
+ADD_CHAR "Hero"
+SET_CHAR_EMOTION "Hero" "happy"
+SET_CHAR_DESC "Hero" "A brave adventurer"
+CHECK_STATUS "Hero"
+HALT

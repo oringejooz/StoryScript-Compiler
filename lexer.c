@@ -15,18 +15,58 @@ static struct {
     char *keyword;
     TokenType type;
 } keywords[] = {
-    {"title", TOKEN_TITLE}, {"say", TOKEN_SAY}, {"narrate", TOKEN_NARRATE}, {"pause", TOKEN_PAUSE},
-    {"choice", TOKEN_CHOICE}, {"input", TOKEN_INPUT}, {"confirm", TOKEN_CONFIRM}, {"goto", TOKEN_GOTO},
-    {"end", TOKEN_END}, {"return", TOKEN_RETURN}, {"story_restart", TOKEN_RESTART},
-    {"if", TOKEN_IF}, {"ifelse", TOKEN_IFELSE}, {"switch", TOKEN_SWITCH}, {"assign", TOKEN_ASSIGN},
-    {"increase", TOKEN_INCREASE}, {"decrease", TOKEN_DECREASE}, {"scale", TOKEN_SCALE},
-    {"divide_by", TOKEN_DIVIDE_BY}, {"randomize", TOKEN_RANDOMIZE}, {"both", TOKEN_BOTH},
-    {"either", TOKEN_EITHER}, {"invert", TOKEN_INVERT}, {"combine", TOKEN_COMBINE},
-    {"length_of", TOKEN_LENGTH}, {"substring_in", TOKEN_SUBSTRING_IN}, {"uppercase", TOKEN_UPPERCASE},
-    {"lowercase", TOKEN_LOWERCASE}, {"format_text", TOKEN_FORMAT_TEXT}, {"create_inventory", TOKEN_CREATE_INV},
-    {"add_to_inventory", TOKEN_ADD_ITEM}, {"remove_item", TOKEN_REMOVE_ITEM}, {"has_item", TOKEN_HAS_ITEM},
-    {"count_inventory", TOKEN_COUNT_INV}, {"clear_inventory", TOKEN_CLEAR_INV}, {"show_inventory", TOKEN_SHOW_INV},
-    {"set_time_of_day", TOKEN_SET_TIME}, {"check_time_of_day", TOKEN_CHECK_TIME}, {NULL, TOKEN_EOF}
+    {"title", TOKEN_TITLE},
+    {"say", TOKEN_SAY},
+    {"narrate", TOKEN_NARRATE},
+    {"pause", TOKEN_PAUSE},
+    {"choice", TOKEN_CHOICE},
+    {"input", TOKEN_INPUT},
+    {"confirm", TOKEN_CONFIRM},
+    {"wait_for_key", TOKEN_WAIT_FOR_KEY},
+    {"goto", TOKEN_GOTO},
+    {"end", TOKEN_END},
+    {"return", TOKEN_RETURN},
+    {"story_restart", TOKEN_RESTART},
+    {"if", TOKEN_IF},
+    {"ifelse", TOKEN_IFELSE},
+    {"switch", TOKEN_SWITCH},
+    {"assign", TOKEN_ASSIGN},
+    {"increase", TOKEN_INCREASE},
+    {"decrease", TOKEN_DECREASE},
+    {"scale", TOKEN_SCALE},
+    {"divide_by", TOKEN_DIVIDE_BY},
+    {"randomize", TOKEN_RANDOMIZE},
+    {"both", TOKEN_BOTH},
+    {"either", TOKEN_EITHER},
+    {"invert", TOKEN_INVERT},
+    {"combine", TOKEN_COMBINE},
+    {"length_of", TOKEN_LENGTH},
+    {"substring_in", TOKEN_SUBSTRING_IN},
+    {"uppercase", TOKEN_UPPERCASE},
+    {"lowercase", TOKEN_LOWERCASE},
+    {"format_text", TOKEN_FORMAT_TEXT},
+    {"create_inventory", TOKEN_CREATE_INV},
+    {"add_to_inventory", TOKEN_ADD_ITEM},
+    {"remove_item", TOKEN_REMOVE_ITEM},
+    {"has_item", TOKEN_HAS_ITEM},
+    {"count_inventory", TOKEN_COUNT_INV},
+    {"clear_inventory", TOKEN_CLEAR_INV},
+    {"show_inventory", TOKEN_SHOW_INV},
+    {"create_scene", TOKEN_CREATE_SCENE},
+    {"random_event", TOKEN_RANDOM_EVENT},
+    {"set_background", TOKEN_SET_BACKGROUND},
+    {"trigger_scene", TOKEN_TRIGGER_SCENE},
+    {"add_character", TOKEN_ADD_CHAR},
+    {"remove_character", TOKEN_REMOVE_CHAR},
+    {"set_character_emotion", TOKEN_SET_CHAR_EMOTION},
+    {"change_name", TOKEN_CHANGE_NAME},
+    {"set_character_description", TOKEN_SET_CHAR_DESC},
+    {"character_status", TOKEN_CHAR_STATUS},
+    {"check_status", TOKEN_CHECK_STATUS},
+    {"set_time_of_day", TOKEN_SET_TIME},
+    {"check_time_of_day", TOKEN_CHECK_TIME},
+    {"default", TOKEN_DEFAULT}, // For switch statement
+    {NULL, TOKEN_EOF}
 };
 
 void init_lexer(FILE *file) {
@@ -65,7 +105,7 @@ Token get_next_token() {
         }
         if (buffer[buffer_pos] == '"') {
             int length = buffer_pos - start;
-            char *value = strndup(buffer + start, length); // Using custom strndup from utils.c
+            char *value = strndup(buffer + start, length);
             buffer_pos++;
             return (Token){TOKEN_STRING, value};
         }
@@ -77,7 +117,7 @@ Token get_next_token() {
             buffer_pos++;
         }
         int length = buffer_pos - start;
-        char *value = strndup(buffer + start, length); // Using custom strndup from utils.c
+        char *value = strndup(buffer + start, length);
         if (buffer_pos < buffer_size && buffer[buffer_pos] == ':') {
             buffer_pos++;
             return (Token){TOKEN_LABEL, value};
