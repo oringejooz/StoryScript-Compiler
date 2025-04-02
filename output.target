@@ -1,9 +1,6 @@
-PRINT "Welcome to the Nightvale!"
-CREATE_INV backpack
-ADD_ITEM backpack "sandwich"
-SHOW_INV backpack
+LOAD "Hero Selection"
+PRINT "Now we will design our hero"
 ADD_CHAR "Bob"
-SET_CHAR_EMOTION "Bob" "happy"
-SET_CHAR_DESC "Bob" "A Highschool kid"
-CHECK_STATUS "Bob"
-HALT
+CREATE_INV bob_inv
+ADD_ITEM bob_inv "baseball bat"
+SHOW_INV bob_inv

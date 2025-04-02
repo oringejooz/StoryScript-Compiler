@@ -8,37 +8,64 @@ class StoryScriptUI:
     def __init__(self, root):
         self.root = root
         self.root.title("StoryScript Compiler")
-        self.root.geometry("800x600")
+        self.root.geometry("900x700")
+        self.root.configure(bg="#f0f4f8")  # Light background color
+
+        # Style configuration
+        style = ttk.Style()
+        style.configure("TNotebook", background="#f0f4f8", borderwidth=0)
+        style.configure("TNotebook.Tab", font=("Helvetica", 12, "bold"), padding=[10, 5], 
+                        background="#d1e0e6", foreground="#000000")  # Set font color to black
+        style.map("TNotebook.Tab", background=[("selected", "#4a90e2")])  # Only change background, not foreground
 
         # Create notebook (tabs)
         self.notebook = ttk.Notebook(root)
-        self.notebook.pack(fill="both", expand=True)
+        self.notebook.pack(fill="both", expand=True, padx=10, pady=10)
 
         # Tab 1: Compiler
-        self.tab1 = ttk.Frame(self.notebook)
+        self.tab1 = ttk.Frame(self.notebook, style="Custom.TFrame")
         self.notebook.add(self.tab1, text="Compiler")
+        style.configure("Custom.TFrame", background="#f0f4f8")
 
-        # Input area
-        tk.Label(self.tab1, text="StoryScript Input:").pack(pady=5)
-        self.input_text = scrolledtext.ScrolledText(self.tab1, height=15, width=80)
-        self.input_text.pack(pady=5)
+        # Frame for input area
+        input_frame = tk.Frame(self.tab1, bg="#f0f4f8", bd=2, relief="groove")
+        input_frame.pack(pady=10, padx=10, fill="both", expand=True)
+
+        tk.Label(input_frame, text="StoryScript Input:", font=("Arial", 14, "bold"), bg="#f0f4f8", fg="#333").pack(pady=5)
+        self.input_text = scrolledtext.ScrolledText(input_frame, height=15, width=80, font=("Consolas", 11), 
+                                                    bg="#ffffff", fg="#2c3e50", borderwidth=1, relief="flat")
+        self.input_text.pack(pady=5, padx=5, fill="both", expand=True)
 
         # Compile and Run button
-        self.run_button = tk.Button(self.tab1, text="Compile and Run", command=self.compile_and_run)
-        self.run_button.pack(pady=5)
+        button_frame = tk.Frame(self.tab1, bg="#f0f4f8")
+        button_frame.pack(pady=10)
+        self.run_button = tk.Button(button_frame, text="Compile and Run", command=self.compile_and_run, 
+                                    font=("Arial", 12, "bold"), bg="#4a90e2", fg="white", 
+                                    activebackground="#357abd", activeforeground="white", 
+                                    relief="flat", padx=20, pady=5)
+        self.run_button.pack()
 
-        # Output area
-        tk.Label(self.tab1, text="Output:").pack(pady=5)
-        self.output_text = scrolledtext.ScrolledText(self.tab1, height=15, width=80)
-        self.output_text.pack(pady=5)
+        # Frame for output area
+        output_frame = tk.Frame(self.tab1, bg="#f0f4f8", bd=2, relief="groove")
+        output_frame.pack(pady=10, padx=10, fill="both", expand=True)
+
+        tk.Label(output_frame, text="Output:", font=("Arial", 14, "bold"), bg="#f0f4f8", fg="#333").pack(pady=5)
+        self.output_text = scrolledtext.ScrolledText(output_frame, height=15, width=80, font=("Consolas", 11), 
+                                                     bg="#ffffff", fg="#2c3e50", borderwidth=1, relief="flat")
+        self.output_text.pack(pady=5, padx=5, fill="both", expand=True)
 
         # Tab 2: User Manual
-        self.tab2 = ttk.Frame(self.notebook)
+        self.tab2 = ttk.Frame(self.notebook, style="Custom.TFrame")
         self.notebook.add(self.tab2, text="User Manual")
 
-        # Manual content (scrolled text)
-        self.manual_text = scrolledtext.ScrolledText(self.tab2, height=35, width=80)
-        self.manual_text.pack(pady=10)
+        # Manual content frame
+        manual_frame = tk.Frame(self.tab2, bg="#f0f4f8", bd=2, relief="groove")
+        manual_frame.pack(pady=10, padx=10, fill="both", expand=True)
+
+        tk.Label(manual_frame, text="User Manual", font=("Arial", 16, "bold"), bg="#f0f4f8", fg="#4a90e2").pack(pady=5)
+        self.manual_text = scrolledtext.ScrolledText(manual_frame, height=35, width=80, font=("Arial", 11), 
+                                                     bg="#ffffff", fg="#2c3e50", wrap="word", borderwidth=1, relief="flat")
+        self.manual_text.pack(pady=5, padx=5, fill="both", expand=True)
         self.populate_manual()
 
     def compile_and_run(self):
@@ -59,7 +86,9 @@ class StoryScriptUI:
         try:
             # Compile the C program if not already compiled
             if not os.path.exists("storyscript_compiler.exe"):
+                self.output_text.insert(tk.END, "Compiling StoryScript compiler...\n")
                 subprocess.run(["gcc", "-o", "storyscript_compiler.exe", "storyscript.c", "-lm"], check=True)
+                self.output_text.insert(tk.END, "Compilation successful!\n\n")
 
             # Run the compiler with the temporary file
             result = subprocess.run(["storyscript_compiler.exe", temp_file_path], 
