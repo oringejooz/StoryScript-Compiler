@@ -1,31 +1,30 @@
 title("Function Test Story")
-
 narrate("Testing all features of StoryScript.")
 
 choice("Take the risky path", "Take the safe path") -> [risky_path, safe_path]
 
 risky_path:
     narrate("You chose the risky path and found an ancient chest.")
-    create_inventory(player_inventory)
-    add_to_inventory(player_inventory, "Ancient Key")
-    has_item(player_inventory, "Ancient Key")
-    goto(treasure_room)
+    create_inventory("player_inventory")
+    add_to_inventory("player_inventory", "Ancient Key")
+    has_item("player_inventory", "Ancient Key")
+    goto("treasure_room")
 
 safe_path:
     narrate("You took the safe path and found a healing potion.")
-    create_inventory(player_inventory)
-    add_to_inventory(player_inventory, "Healing Potion")
-    show_inventory(player_inventory)
-    goto(ending)
+    create_inventory("player_inventory")
+    add_to_inventory("player_inventory", "Healing Potion")
+    show_inventory("player_inventory")
+    goto("ending")
 
 treasure_room:
     narrate("You unlock the door with the Ancient Key.")
-    remove_item(player_inventory, "Ancient Key")
+    remove_item("player_inventory", "Ancient Key")
     narrate("Inside, you find a pile of gold.")
-    assign(gold, 100)
-    increase(gold, 50)
+    assign("gold", 100)
+    increase("gold", 50)
     narrate("Your gold count is now increased.")
-    goto(ending)
+    goto("ending")
 
 ending:
     narrate("You reach the end of your adventure.")
