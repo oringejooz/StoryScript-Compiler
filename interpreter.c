@@ -142,12 +142,12 @@ void run_interpreter(const char *target_filename) {
             char *choice_tokens[10], *label_tokens[10];
             int choice_count = 0;
 
-            char *token = strtok(choices + 7, ",");
+            char *token = strtok(choices + 6, ","); // Adjusted from +7 to +6
             while (token && choice_count < 10) {
                 trim(token);
-                if (token[0] == '"') token++;
+                if (token[0] == '"') token++; // Remove opening quote
                 int len = strlen(token);
-                if (len > 0 && token[len - 1] == '"') token[len - 1] = '\0';
+                if (len > 0 && token[len - 1] == '"') token[len - 1] = '\0'; // Remove closing quote
                 choice_tokens[choice_count] = strdup(token);
                 token = strtok(NULL, ",");
                 choice_count++;
