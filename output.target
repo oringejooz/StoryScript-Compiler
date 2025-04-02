@@ -1,9 +1,9 @@
-LOAD "My First Story"
-PRINT "Welcome to StoryScript!"
-PROMPT "Continue","Exit"  -> [continue_story,exit_story]
-LABEL continue_story
-PRINT "You chose to continue."
-HALT
-LABEL exit_story
-PRINT "You chose to exit."
+PRINT "Welcome to the Nightvale!"
+CREATE_INV backpack
+ADD_ITEM backpack "sandwich"
+SHOW_INV backpack
+ADD_CHAR "Bob"
+SET_CHAR_EMOTION "Bob" "happy"
+SET_CHAR_DESC "Bob" "A Highschool kid"
+CHECK_STATUS "Bob"
 HALT
