@@ -1,9 +1,18 @@
-PRINT "Welcome to the story!"
-CREATE_INV player_inv
-ADD_ITEM player_inv "sword"
-SHOW_INV player_inv
-ADD_CHAR "Hero"
-SET_CHAR_EMOTION "Hero" "happy"
-SET_CHAR_DESC "Hero" "A brave adventurer"
-CHECK_STATUS "Hero"
+LOAD "The Lost Temple"
+PRINT "You stand before the entrance of an ancient temple, rumored to be filled with traps and treasures."
+PROMPT "Enter the temple","Walk away"  -> [enter_temple,walk_away]
+LABEL enter_temple
+PRINT "You step inside, and the door slams shut behind you."
+PROMPT "Light a torch","Proceed in darkness"  -> [light_torch,dark_path]
+LABEL light_torch
+PRINT "The torch reveals ancient carvings and a hidden passage."
+JUMP hidden_passage
+LABEL dark_path
+PRINT "You stumble in the darkness and fall into a pit."
+HALT
+LABEL walk_away
+PRINT "You decide not to take the risk and leave the temple behind."
+HALT
+LABEL hidden_passage
+PRINT "You find a hidden chamber filled with glittering gold and ancient relics."
 HALT
