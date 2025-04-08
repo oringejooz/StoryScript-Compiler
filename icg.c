@@ -124,7 +124,11 @@ static void generate_node_ir(ASTNode *node) {
             fprintf(icg_file, "REMOVE_ITEM %s \"%s\"\n", node->value, node->str1);
             break;
         case AST_HAS_ITEM:
-            fprintf(icg_file, "HAS_ITEM %s \"%s\"\n", node->value, node->str1);
+            if (node->str2) {
+                fprintf(icg_file, "HAS_ITEM %s \"%s\" %s\n", node->value, node->str1, node->str2);
+            } else {
+                fprintf(icg_file, "HAS_ITEM %s \"%s\"\n", node->value, node->str1);
+            }
             break;
         case AST_COUNT_INV:
             fprintf(icg_file, "COUNT_INV %s\n", node->value);

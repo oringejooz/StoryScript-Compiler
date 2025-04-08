@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
     generate_target_code("output.icg", "output.target");
 
     printf("Running interpreter...\n");
-    run_interpreter("output.target");
+    interpret("output.target");  // Changed from run_interpreter to interpret
 
     printf("Cleaning up...\n");
     fclose(file);

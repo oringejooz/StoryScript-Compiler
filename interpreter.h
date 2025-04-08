@@ -4,29 +4,34 @@
 #define MAX_ITEMS 50
 #define MAX_CHARS 20
 
-typedef struct {
+typedef struct LabelMap {
     char *label;
     long position;
 } LabelMap;
 
-typedef struct {
+typedef struct Variable {
     char *name;
-    int value;
+    char *value;
 } Variable;
 
-typedef struct {
+typedef struct Inventory {
     char *name;
     char *items[MAX_ITEMS];
     int count;
 } Inventory;
 
-typedef struct {
+typedef struct Character {
     char *name;
     char *emotion;
     char *description;
     char *status;
 } Character;
 
-void run_interpreter(const char *target_filename);
+typedef struct Scene {
+    char *name;
+    char *background;
+} Scene;
+
+void interpret(const char *filename);
 
 #endif

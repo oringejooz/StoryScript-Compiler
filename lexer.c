@@ -111,6 +111,16 @@ Token get_next_token() {
         }
     }
 
+    if (isdigit(buffer[buffer_pos])) {
+        int start = buffer_pos;
+        while (buffer_pos < buffer_size && isdigit(buffer[buffer_pos])) {
+            buffer_pos++;
+        }
+        int length = buffer_pos - start;
+        char *value = strndup(buffer + start, length);
+        return (Token){TOKEN_NUMBER, value};
+    }
+
     if (isalpha(buffer[buffer_pos])) {
         int start = buffer_pos;
         while (buffer_pos < buffer_size && (isalnum(buffer[buffer_pos]) || buffer[buffer_pos] == '_')) {

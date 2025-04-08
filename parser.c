@@ -70,7 +70,7 @@ ASTNode *parse_choice() {
 static ASTNode *parse_switch() {
     advance();
     match(TOKEN_LPAREN);
-    char *var = strdup(current_token.value);
+    char *var = strdup(current_token.value); // Variable name (TOKEN_IDENTIFIER)
     advance();
     match(TOKEN_RPAREN);
     match(TOKEN_ARROW);
@@ -81,7 +81,7 @@ static ASTNode *parse_switch() {
     int case_count = 0;
 
     while (current_token.type != TOKEN_RBRACKET) {
-        if (current_token.type == TOKEN_STRING) {
+        if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_NUMBER || current_token.type == TOKEN_IDENTIFIER) {
             cases[case_count] = strdup(current_token.value);
             advance();
             match(TOKEN_COLON);
@@ -136,7 +136,7 @@ void parse_statement() {
         case TOKEN_PAUSE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_PAUSE, current_token.value);
+            if (current_token.type == TOKEN_NUMBER) node = create_node(AST_PAUSE, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
@@ -146,7 +146,7 @@ void parse_statement() {
         case TOKEN_INPUT:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_INPUT, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_INPUT, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
@@ -188,10 +188,14 @@ void parse_statement() {
             break;
         case TOKEN_RETURN:
             advance();
+            match(TOKEN_LPAREN);
+            match(TOKEN_RPAREN);
             node = create_node(AST_RETURN, NULL);
             break;
         case TOKEN_RESTART:
             advance();
+            match(TOKEN_LPAREN);
+            match(TOKEN_RPAREN);
             node = create_node(AST_RESTART, NULL);
             break;
         case TOKEN_LABEL:
@@ -201,7 +205,7 @@ void parse_statement() {
         case TOKEN_IF:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_IF, current_token.value);
                 advance();
                 match(TOKEN_RPAREN);
@@ -213,7 +217,7 @@ void parse_statement() {
         case TOKEN_IFELSE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_IFELSE, current_token.value);
                 advance();
                 match(TOKEN_RPAREN);
@@ -233,25 +237,23 @@ void parse_statement() {
         case TOKEN_ASSIGN:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_ASSIGN, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
-                    node->str1 = strdup(current_token.value);
-                    advance();
-                }
+                if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
+                advance();
             }
             match(TOKEN_RPAREN);
             break;
         case TOKEN_INCREASE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_INCREASE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -259,11 +261,11 @@ void parse_statement() {
         case TOKEN_DECREASE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_DECREASE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -271,11 +273,11 @@ void parse_statement() {
         case TOKEN_SCALE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_SCALE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -283,11 +285,11 @@ void parse_statement() {
         case TOKEN_DIVIDE_BY:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_DIVIDE_BY, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -295,11 +297,11 @@ void parse_statement() {
         case TOKEN_RANDOMIZE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_RANDOMIZE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_NUMBER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -307,11 +309,11 @@ void parse_statement() {
         case TOKEN_BOTH:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_BOTH, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_IDENTIFIER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -319,11 +321,11 @@ void parse_statement() {
         case TOKEN_EITHER:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_EITHER, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
-                if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) node->str1 = strdup(current_token.value);
+                if (current_token.type == TOKEN_IDENTIFIER) node->str1 = strdup(current_token.value);
                 advance();
             }
             match(TOKEN_RPAREN);
@@ -331,14 +333,14 @@ void parse_statement() {
         case TOKEN_INVERT:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_INVERT, current_token.value);
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_INVERT, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
         case TOKEN_COMBINE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_COMBINE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -353,7 +355,7 @@ void parse_statement() {
         case TOKEN_LENGTH:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_LENGTH, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -377,7 +379,7 @@ void parse_statement() {
         case TOKEN_UPPERCASE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_UPPERCASE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -389,7 +391,7 @@ void parse_statement() {
         case TOKEN_LOWERCASE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_LOWERCASE, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -413,14 +415,14 @@ void parse_statement() {
         case TOKEN_CREATE_INV:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_CREATE_INV, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_CREATE_INV, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
         case TOKEN_ADD_ITEM:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_ADD_ITEM, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -432,7 +434,7 @@ void parse_statement() {
         case TOKEN_REMOVE_ITEM:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_REMOVE_ITEM, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -444,13 +446,13 @@ void parse_statement() {
         case TOKEN_HAS_ITEM:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING || current_token.type == TOKEN_IDENTIFIER) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_HAS_ITEM, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
                 if (current_token.type == TOKEN_STRING) node->str1 = strdup(current_token.value);
                 advance();
-                if (current_token.type == TOKEN_COMMA) { // Optional variable to store result
+                if (current_token.type == TOKEN_COMMA) {
                     advance();
                     if (current_token.type == TOKEN_IDENTIFIER) node->str2 = strdup(current_token.value);
                     advance();
@@ -461,28 +463,28 @@ void parse_statement() {
         case TOKEN_COUNT_INV:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_COUNT_INV, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_COUNT_INV, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
         case TOKEN_CLEAR_INV:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_CLEAR_INV, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_CLEAR_INV, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
         case TOKEN_SHOW_INV:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_SHOW_INV, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_SHOW_INV, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
         case TOKEN_CREATE_SCENE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_CREATE_SCENE, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_CREATE_SCENE, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
@@ -495,7 +497,7 @@ void parse_statement() {
         case TOKEN_SET_BACKGROUND:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) {
+            if (current_token.type == TOKEN_IDENTIFIER) {
                 node = create_node(AST_SET_BACKGROUND, current_token.value);
                 advance();
                 match(TOKEN_COMMA);
@@ -507,7 +509,7 @@ void parse_statement() {
         case TOKEN_TRIGGER_SCENE:
             advance();
             match(TOKEN_LPAREN);
-            if (current_token.type == TOKEN_STRING) node = create_node(AST_TRIGGER_SCENE, current_token.value);  // Changed to TOKEN_STRING
+            if (current_token.type == TOKEN_IDENTIFIER) node = create_node(AST_TRIGGER_SCENE, current_token.value);
             advance();
             match(TOKEN_RPAREN);
             break;
